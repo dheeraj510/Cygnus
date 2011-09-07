@@ -1,4 +1,6 @@
 Cygnus::Application.routes.draw do
+  get "users/new"
+
    match '/contact', :to => 'pages#contact'
    match '/about',   :to => 'pages#about'
 
