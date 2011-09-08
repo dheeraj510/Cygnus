@@ -7,8 +7,8 @@ buffer.2.path=/home/randy/workspace/rails_projects/cygnus/spec/controllers/pages
 buffer.2.position=310
 
 buffer.3.path=/home/randy/workspace/rails_projects/cygnus/config/routes.rb
-buffer.3.position=315
+buffer.3.position=515
+buffer.3.current=1
 
 buffer.4.path=/home/randy/workspace/rails_projects/cygnus/app/controllers/users_controller.rb
-buffer.4.position=1
-buffer.4.current=1
+buffer.4.position=90
