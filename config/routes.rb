@@ -1,7 +1,5 @@
 Cygnus::Application.routes.draw do
 
-  get "websites/new"
-
   resources :users
   resources :sessions, :only => [:new, :create, :destroy]
   resources :websites

@@ -21,4 +21,22 @@ class WebsitesController < ApplicationController
       render 'new'
     end
   end
+
+  def edit
+    @website = Website.find(params[:id])
+    @title = "Edit Web Site"
+  end
+
+  def update
+    @website = Website.find(params[:id])
+    if @website.update_attributes(params[:website])
+      flash[:success] = "Web site updated."
+      redirect_to @website
+    else
+      @title = "Edit Web Site"
+      render 'edit'
+    end
+  end
+
+
 end
