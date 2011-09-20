@@ -1,2 +1,16 @@
-<h1>Websites#new</h1>
-<p>Find me in app/views/websites/new.html.erb</p>
+<h1>Add a new web site</h1>
+
+<%= form_for(@website) do |f| %>
+  <%= render 'shared/error_messages', :object => f.object %>
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </div>
+  <div class="actions">
+    <%= f.submit "Add site" %>
+  </div>
+<% end %>

@@ -22,14 +22,41 @@ describe WebsitesController do
 
   describe "GET 'new'" do
     it "should be successful" do
-      get 'new'
+      get :new
       response.should be_success
+    end
+
+    it "should have the right title" do
+      get :new
+      response.should have_selector("title", :content => "Add a new web site")
     end
   end
 
-    it "should have the right title" do
-      get 'new'
-      response.should have_selector("title", :content => "Add a new web site")
+  describe "POST 'new'" do
+
+    describe "failure" do
+
+      before(:each) do
+        @attr = { :name => "", :title => "" }
+      end
+
+      it "should not create a web site" do
+        lambda do
+          post :create, :website  => @attr
+        end.should_not change(Website, :count)
+      end
+
+      it "should have the right title" do
+        post :create, :website => @attr
+        response.should have_selector("title", :content => "Add a new web site")
+      end
+
+      it "should render the 'new' page" do
+        post :create, :website => @attr
+        response.should render_template('new')
+      end
     end
+    
+  end
 
 end
