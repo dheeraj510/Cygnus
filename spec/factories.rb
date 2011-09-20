@@ -8,3 +8,8 @@ end
 Factory.sequence :email do |n|
   "person-#{n}@example.com"
 end
+
+Factory.define :website do |website|
+  website.name  "Factory Website"
+  website.title     "A factory website"
+end

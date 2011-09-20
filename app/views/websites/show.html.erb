@@ -1,0 +1,13 @@
+<table class="profile" summary="Website information">
+  <tr>
+    <td class="main">
+      <h1>
+        <%= @website.title %>
+      </h1>
+    </td>
+    <td class="sidebar round">
+      <strong>Name</strong> <%= @website.name %><br />
+      <strong>URL</strong>  <%= link_to website_path(@website), @website %>
+    </td>
+  </tr>
+</table>
