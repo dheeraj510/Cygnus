@@ -21,14 +21,39 @@ describe WebsitesController do
   end
 
   describe "GET 'new'" do
-    it "should be successful" do
-      get :new
-      response.should be_success
+    
+    describe "as a non-signed-in user" do
+      it "should deny access" do
+        get :new
+        response.should redirect_to(signin_path)
+      end
     end
 
-    it "should have the right title" do
-      get :new
-      response.should have_selector("title", :content => "Add a new web site")
+    describe "as a non-admin user" do
+      it "should protect the page" do
+        @user = Factory(:user, :email => "non_admin@example.com")
+        test_sign_in(@user)
+        get :new
+        response.should redirect_to(root_path)
+      end
+    end
+
+    describe "as a signed_in admin user" do
+      
+      before(:each) do
+        @admin = Factory(:user, :email => "admin@example.com", :admin => true)
+        test_sign_in(@admin)
+      end
+      
+      it "should be successful" do
+        get :new
+        response.should be_success
+      end
+
+      it "should have the right title" do
+        get :new
+        response.should have_selector("title", :content => "Add a new web site")
+      end
     end
   end
 
@@ -40,20 +65,44 @@ describe WebsitesController do
         @attr = { :name => "", :title => "" }
       end
 
-      it "should not create a web site" do
-        lambda do
+      describe "as a non-signed-in user" do
+        it "should deny access" do
           post :create, :website  => @attr
-        end.should_not change(Website, :count)
+          response.should redirect_to(signin_path)
+        end
       end
 
-      it "should have the right title" do
-        post :create, :website => @attr
-        response.should have_selector("title", :content => "Add a new web site")
+      describe "as a non-admin user" do
+        it "should protect the page" do
+          @user = Factory(:user, :email => "non_admin@example.com")
+          test_sign_in(@user)
+          post :create, :website  => @attr
+          response.should redirect_to(root_path)
+        end
       end
 
-      it "should render the 'new' page" do
-        post :create, :website => @attr
-        response.should render_template('new')
+      describe "as a admin user" do
+        
+        before(:each) do
+          admin = Factory(:user, :email => "admin@example.com", :admin => true)
+          test_sign_in(admin)
+        end
+        
+        it "should not create a web site" do
+          lambda do
+            post :create, :website  => @attr
+          end.should_not change(Website, :count)
+        end
+
+        it "should have the right title" do
+          post :create, :website => @attr
+          response.should have_selector("title", :content => "Add a new web site")
+        end
+
+        it "should render the 'new' page" do
+          post :create, :website => @attr
+          response.should render_template('new')
+        end
       end
     end
     
@@ -61,6 +110,8 @@ describe WebsitesController do
 
       before(:each) do
         @attr = { :name => "Test Example Web Site", :title => "A Test Example Website"}
+          admin = Factory(:user, :email => "admin@example.com", :admin => true)
+          test_sign_in(admin)
       end
 
       it "should create a website" do
@@ -81,7 +132,7 @@ describe WebsitesController do
     before(:each) do
       @website = Factory(:website)
     end
-
+    
     it "should be successful" do
       get :edit, :id => @website
       response.should be_success

@@ -1,4 +1,6 @@
 class WebsitesController < ApplicationController
+    before_filter :authenticate, :only => [:new, :create]
+    before_filter :admin_user, :only => [:new, :create]
   
   def show
     @website =Website.find(params[:id])
