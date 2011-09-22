@@ -12,6 +12,8 @@
 class Website < ActiveRecord::Base
   attr_accessible :name, :title
   
+  has_many :users
+  
   validates :name, :presence => true
   validates :title, :presence => true
 end

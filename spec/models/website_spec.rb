@@ -31,6 +31,13 @@ describe Website do
     no_title_website.should_not be_valid
   end
 
-
-
+  describe "user associations" do
+    before(:each) do
+      @website = Website.create(@attr)
+    end
+    
+    it"should have users attribute" do
+      @website.should respond_to(:users)
+    end
+  end
 end

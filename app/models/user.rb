@@ -17,6 +17,10 @@ class User < ActiveRecord::Base
   attr_accessor :password
   attr_accessible  :email, :password, :password_confirmation
   
+  belongs_to :website
+  
+   validates :website_id, :presence => true
+  
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   
   validates :email, :presence => true, :format => { :with => email_regex }, :uniqueness => { :case_sensitive => false }

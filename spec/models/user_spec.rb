@@ -16,43 +16,63 @@ require 'spec_helper'
 describe User do
   
   before(:each) do
-    @attr = { 
-      :email => "user@example.com",
-      :password => "foobar11",
-      :password_confirmation => "foobar11"
-    }
+    @attr = { :email => "user@example.com", :password => "foobar11", :password_confirmation => "foobar11" }
+    @website = Factory(:website)
   end
   
-  it "should create a new instance given valid attributes" do
-    User.create!(@attr)
+  describe "validations" do
+    
+    it "should require a website id" do
+      User.new(@attr).should_not be_valid
+    end
+    
+    it "should create a new instance given valid attributes" do
+      @website.users.create!(@attr)
+    end
+  
+    it "should require an email" do
+      no_email_user = @website.users.new(@attr.merge(:email => ""))
+      no_email_user.should_not be_valid
+    end
+
+    it "should accept valid email addresses" do
+      addresses = %w[user@foo.com THE_USER@foo.bar.org first.last@foo.jp]
+      addresses.each do |address|
+        valid_email_user = @website.users.new(@attr.merge(:email => address))
+        valid_email_user.should be_valid
+      end
+    end
+
+    it "should reject invalid email addresses" do
+      addresses = %w[user@foo,com user_at_foo.org example.user@foo.]
+      addresses.each do |address|
+        invalid_email_user = User.new(@attr.merge(:email => address))
+        invalid_email_user.should_not be_valid
+      end
+    end
+
+    it "should reject duplicate email addresses" do
+      # Put a user with given email address into the database.
+      User.create!(@attr)
+      user_with_duplicate_email = User.new(@attr)
+      user_with_duplicate_email.should_not be_valid
+    end
   end
   
-  it "should require an email" do
-    no_email_user = User.new(@attr.merge(:email => ""))
-    no_email_user.should_not be_valid
-  end
+  describe "user associations" do
 
-  it "should accept valid email addresses" do
-    addresses = %w[user@foo.com THE_USER@foo.bar.org first.last@foo.jp]
-    addresses.each do |address|
-      valid_email_user = User.new(@attr.merge(:email => address))
-      valid_email_user.should be_valid
+    before(:each) do
+      @user = @website.users.new(@attr)
     end
-  end
-
-  it "should reject invalid email addresses" do
-    addresses = %w[user@foo,com user_at_foo.org example.user@foo.]
-    addresses.each do |address|
-      invalid_email_user = User.new(@attr.merge(:email => address))
-      invalid_email_user.should_not be_valid
+    
+    it  "should have a website attr" do
+      @user.should respond_to(:website)
     end
-  end
-
-  it "should reject duplicate email addresses" do
-    # Put a user with given email address into the database.
-    User.create!(@attr)
-    user_with_duplicate_email = User.new(@attr)
-    user_with_duplicate_email.should_not be_valid
+    
+    it "should have the right associated website" do
+      @user.website_id.should == @website.id
+      @user.website.should == @website
+    end
   end
   
   describe "password validations" do

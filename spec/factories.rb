@@ -3,6 +3,7 @@ Factory.define :user do |user|
   user.email                            "testuser0@example.com"
   user.password                      "testuser0"
   user.password_confirmation "testuser0"
+  user.website_id                     1
 end
 
 Factory.sequence :email do |n|
