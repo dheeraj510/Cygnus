@@ -4,10 +4,20 @@ describe "Users" do
 
   describe "signup" do
 
-    describe "failure" do
+     describe "failure" do
 
       it "should not make a new user" do
         lambda do
+          #first log in a admin user
+          @website = Factory(:website)
+          @admin = Factory(:user, :admin => true)
+          visit signin_path
+          fill_in :email,    :with => @admin.email
+          fill_in :password, :with => @admin.password
+          click_button
+          controller.should be_signed_in
+          
+          #Now you can try to add a new user
           visit 'users/new'
           fill_in "Email",        :with => ""
           fill_in "Password",     :with => ""
@@ -15,7 +25,9 @@ describe "Users" do
           click_button
           response.should render_template('users/new')
           response.should have_selector("div#error_explanation")
-        end.should_not change(User, :count)
+          
+        #The factory for admin creates 1 user. There should only be that one user created in this block so the 'end' should only have 1 user removed
+        end.should change(User, :count).by(1)
       end
     end
       
@@ -23,6 +35,16 @@ describe "Users" do
 
       it "should make a new user" do
         lambda do
+          #first log in a admin user
+          @website = Factory(:website)
+          @admin = Factory(:user, :admin => true)
+          visit signin_path
+          fill_in :email,    :with => @admin.email
+          fill_in :password, :with => @admin.password
+          click_button
+          controller.should be_signed_in
+          
+          #Now you can try to add a new user
           visit 'users/new'
           fill_in "Email",        :with => "user@example.com"
           fill_in "Password",     :with => "foobar0011"
@@ -30,7 +52,10 @@ describe "Users" do
           click_button
           response.should have_selector("div.flash.success", :content => "New user")
           response.should render_template('users/show')
-        end.should change(User, :count).by(1)
+
+
+        #The factory for admin creates 1 user. That plus the new user means that 'end' should have 2 user's removed
+        end.should change(User, :count).by(2)
       end
     end
 

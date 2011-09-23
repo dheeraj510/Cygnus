@@ -99,6 +99,9 @@ describe UsersController do
     describe "failure" do
 
       before(:each) do
+        @website = Factory(:website)
+        @admin = Factory(:user, :email => "admin@example.com", :admin => true)
+        test_sign_in(@admin)
         @attr = { :email => "", :password => "",  :password_confirmation => "" }
       end
 
@@ -122,6 +125,9 @@ describe UsersController do
     describe "success" do
 
       before(:each) do
+        @website = Factory(:website)
+        @admin = Factory(:user, :email => "admin@example.com", :admin => true)
+        test_sign_in(@admin)
         @attr = { :email => "user@example.com", :password => "foobar00", :password_confirmation => "foobar00" }
       end
 

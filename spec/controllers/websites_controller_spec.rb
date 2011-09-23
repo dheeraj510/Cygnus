@@ -110,8 +110,8 @@ describe WebsitesController do
 
       before(:each) do
         @attr = { :name => "Test Example Web Site", :title => "A Test Example Website"}
-          admin = Factory(:user, :email => "admin@example.com", :admin => true)
-          test_sign_in(admin)
+        @admin = Factory(:user, :email => "admin@example.com", :admin => true)
+        test_sign_in(@admin)
       end
 
       it "should create a website" do

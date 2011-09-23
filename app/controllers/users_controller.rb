@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  before_filter :authenticate, :only => [:index, :edit, :update, :destroy]
+  before_filter :authenticate, :only => [:index, :edit, :update, :create, :destroy]
   before_filter :correct_user, :only => [:edit, :update]
-  before_filter :admin_user,   :only => :destroy
+  before_filter :website_admin_user,   :only => [:create, :destroy]
 
   def index
     @title = "All users"
@@ -19,7 +19,10 @@ class UsersController < ApplicationController
   end
  
   def create
-    @user = User.new(params[:user])
+    # Only existing (see filter) users can create a new user and all users they create belong to the same website they belong to
+    @website = Website.find (current_user.website_id)
+    @user = @website.users.new(params[:user])
+    
     if @user.save
       sign_in @user
       flash[:success] = "New user has been added"
