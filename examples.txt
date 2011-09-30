@@ -1,0 +1,10 @@
+Add Website admin to websites.
+
+
+rails generate migration add_admin_to_users admin:boolean
+$ bundle exec rake db:migrate
+$ bundle exec rake db:test:prepare
+
+git checkout -b user-microposts
+git add.
+git commit -m "Message"

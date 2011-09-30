@@ -41,7 +41,10 @@ buffer.13.position=1668
 
 buffer.14.path=/home/randy/workspace/rails_projects/cygnus/spec/requests/users_spec.rb
 buffer.14.position=2011
-buffer.14.current=1
 
 buffer.15.path=/home/randy/workspace/rails_projects/cygnus/spec/spec_helper.rb
 buffer.15.position=1007
+
+buffer.16.path=/home/randy/workspace/rails_projects/cygnus/examples.txt
+buffer.16.position=222
+buffer.16.current=1
