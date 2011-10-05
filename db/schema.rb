@@ -10,7 +10,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110921223736) do
+ActiveRecord::Schema.define(:version => 20111003234334) do
+
+  create_table "site_admins", :force => true do |t|
+    t.integer  "site_id"
+    t.integer  "admin_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "site_admins", ["site_id", "admin_id"], :name => "index_site_admins_on_site_id_and_admin_id", :unique => true
+  add_index "site_admins", ["site_id"], :name => "index_site_admins_on_site_id"
 
   create_table "users", :force => true do |t|
     t.string   "email"
@@ -24,6 +34,16 @@ ActiveRecord::Schema.define(:version => 20110921223736) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["website_id"], :name => "index_users_on_website_id"
+
+  create_table "website_admins", :force => true do |t|
+    t.integer  "website_id"
+    t.integer  "admin_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "website_admins", ["website_id", "admin_id"], :name => "index_website_admins_on_website_id_and_admin_id", :unique => true
+  add_index "website_admins", ["website_id"], :name => "index_website_admins_on_website_id"
 
   create_table "websites", :force => true do |t|
     t.string   "name"

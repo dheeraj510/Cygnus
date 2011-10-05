@@ -9,6 +9,7 @@
 #  encrypted_password :string(255)
 #  salt               :string(255)
 #  admin              :boolean         default(FALSE)
+#  website_id         :integer
 #
 
 require 'digest'
@@ -18,6 +19,7 @@ class User < ActiveRecord::Base
   attr_accessible  :email, :password, :password_confirmation
   
   belongs_to :website
+  has_many :website_admins, :foreign_key => "admin_id", :dependent => :destroy
   
    validates :website_id, :presence => true
   

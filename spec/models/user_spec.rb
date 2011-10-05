@@ -59,7 +59,7 @@ describe User do
     end
   end
   
-  describe "user associations" do
+  describe "website associations" do
 
     before(:each) do
       @user = @website.users.new(@attr)
@@ -74,6 +74,19 @@ describe User do
       @user.website.should == @website
     end
   end
+  
+  describe "website admins associations" do
+    before(:each) do
+      @user = @website.users.new(@attr)
+    end
+    
+    it "should have a website_admins method" do
+      @user.should respond_to(:website_admins)
+    end
+   
+  end
+
+  
   
   describe "password validations" do
 

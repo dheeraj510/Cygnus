@@ -40,4 +40,28 @@ describe Website do
       @website.should respond_to(:users)
     end
   end
+  
+  describe " admins associations" do
+    before(:each) do
+      @website = Website.create(@attr)
+    end
+    
+    it "should have website_admins" do
+      @website.should respond_to(:website_admins)
+    end
+    
+    it "should respond to admin?" do
+      @website.should respond_to(:admin? )
+    end
+
+    it  "should return true if user is admin" do
+      @user_attr = { :email => "user@example.com", :password => "foobar11", :password_confirmation => "foobar11" }
+      @user = @website.users.create(@user_attr)
+      @website.website_admins.create(:admin_id => @user)
+      @website.admin?(@user).should be_true
+    end
+    
+  end
+  
+  
 end
