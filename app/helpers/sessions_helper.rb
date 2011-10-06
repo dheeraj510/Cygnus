@@ -20,6 +20,7 @@ module SessionsHelper
   def sign_out
     cookies.delete(:remember_token)
     self.current_user = nil
+    self.current_website = nil
   end
 
   def deny_access
@@ -34,6 +35,18 @@ module SessionsHelper
   def redirect_back_or(default)
     redirect_to(session[:return_to] || default)
     clear_return_to
+  end
+
+  def current_website=(website)
+    @current_website = website
+  end
+
+  def current_website
+    @current_website ||= Website.find_by_id(@current_user.website_id)
+  end
+
+  def current_website?(website)
+    website == current_website
   end
 
   private

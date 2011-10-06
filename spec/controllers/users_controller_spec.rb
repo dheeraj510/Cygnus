@@ -96,12 +96,17 @@ describe UsersController do
 
   describe "POST 'create'" do
 
+      before(:each) do
+        @admin_attr = { :email => "admin@example.com", :password => "foobar00", :password_confirmation => "foobar00" }
+        @website = Factory(:website)
+        @admin = @website.users.create(@admin_attr)
+        @website.website_admins.create(:admin_id => @admin)
+        test_sign_in(@admin)
+      end
+
     describe "failure" do
 
       before(:each) do
-        @website = Factory(:website)
-        @admin = Factory(:user, :email => "admin@example.com", :admin => true)
-        test_sign_in(@admin)
         @attr = { :email => "", :password => "",  :password_confirmation => "" }
       end
 
@@ -125,9 +130,6 @@ describe UsersController do
     describe "success" do
 
       before(:each) do
-        @website = Factory(:website)
-        @admin = Factory(:user, :email => "admin@example.com", :admin => true)
-        test_sign_in(@admin)
         @attr = { :email => "user@example.com", :password => "foobar00", :password_confirmation => "foobar00" }
       end
 
@@ -262,7 +264,9 @@ describe UsersController do
   describe "DELETE 'destroy'" do
 
     before(:each) do
-      @user = Factory(:user)
+        @website = Factory(:website)
+        @user_attr = { :email => "user@example.com", :password => "foobar00", :password_confirmation => "foobar00" }
+        @user = @website.users.create(@user_attr)
     end
 
     describe "as a non-signed-in user" do
@@ -283,8 +287,8 @@ describe UsersController do
     describe "as an admin user" do
 
       before(:each) do
-        admin = Factory(:user, :email => "admin@example.com", :admin => true)
-        test_sign_in(admin)
+        @website.website_admins.create(:admin_id => @user)
+          test_sign_in(@user)
       end
 
       it "should destroy the user" do

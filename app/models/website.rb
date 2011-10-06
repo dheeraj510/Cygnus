@@ -19,6 +19,6 @@ class Website < ActiveRecord::Base
   validates :title, :presence => true
   
   def admin?(user)
-    self.website_admins.find_by_admin_id (user.id)
+    self.website_admins.find_by_admin_id (user)
   end
 end

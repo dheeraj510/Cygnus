@@ -10,7 +10,10 @@ describe "Users" do
         lambda do
           #first log in a admin user
           @website = Factory(:website)
-          @admin = Factory(:user, :admin => true)
+          @admin_attr = { :email => "admin@example.com", :password => "foobar00", :password_confirmation => "foobar00" }
+          @admin = @website.users.create(@admin_attr)
+          @website.website_admins.create(:admin_id => @admin)
+
           visit signin_path
           fill_in :email,    :with => @admin.email
           fill_in :password, :with => @admin.password
@@ -37,7 +40,10 @@ describe "Users" do
         lambda do
           #first log in a admin user
           @website = Factory(:website)
-          @admin = Factory(:user, :admin => true)
+          @admin_attr = { :email => "admin@example.com", :password => "foobar00", :password_confirmation => "foobar00" }
+          @admin = @website.users.create(@admin_attr)
+          @website.website_admins.create(:admin_id => @admin)
+         
           visit signin_path
           fill_in :email,    :with => @admin.email
           fill_in :password, :with => @admin.password
