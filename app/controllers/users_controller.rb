@@ -19,12 +19,12 @@ class UsersController < ApplicationController
   end
  
   def create
-    # Only existing (see filter) users can create a new user and all users they create belong to the same website they belong to
+    # Only website admin (see filter) can create a new user and all users they create belong to the same website the admin belongs to
     @website = Website.find (current_user.website_id)
     @user = @website.users.new(params[:user])
     
     if @user.save
-      sign_in @user
+      sign_in @user #!!! SHOULD NOT DO THIS
       flash[:success] = "New user has been added"
       redirect_to @user
     else
